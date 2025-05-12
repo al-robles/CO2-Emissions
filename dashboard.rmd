@@ -1,7 +1,5 @@
 ---
 title: "World CO2 Emissions"
-author: "Dr. Shashikanth Vydyula"
-date: "`r Sys.Date()`"
 output: 
   html_document:
     df_print: paged
