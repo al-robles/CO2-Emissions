@@ -1,28 +1,15 @@
----
-title: "World CO2 Emissions"
-output: 
-  html_document:
-    df_print: paged
-    toc: true
-    number_sections: false
-    highlight: pygments
-    code_folding: hide
-    
----
 
 ```{r steup, include=FALSE}
 knitr::opts_chunk$set(
   comment = NA,
   warning= FALSE,
   message = FALSE,
-  fig.align='center'
-   
-    
+  fig.align='center'   
 )
 ```
 
 ***
-<center>![](https://raw.githubusercontent.com/shashivydyula/images-repo/main/CO2%20Emissions.jpg)</center>
+![[co2-banner.png]]
 
 ***
 
@@ -58,18 +45,14 @@ head(co2_emissions)
 
 ***
 
-<center>
-<h1>Data Manipulation</h1>
-</center>
-<br>
+### Data Manipulation
 
-<h5><strong>Most of the data is without any errors. I made the following changes:<br><br>
-1. Replaced the missing emission values (NA) with zero.<br><br>
-2. Renamed the country column to 'name' so that it will be easy to join with worldgeojson data.<br><br>
-3. Corrected the iso and per capita column names.<br><br>
-4. Made all column names to lower case.<br><br>
-5. Finally, corrected some country names.<br><br>
-</h5></strong>
+Most of the data is without any errors. I made the following changes:
+1. Replaced the missing emission values (NA) with zero.
+2. Renamed the country column to 'name' so that it will be easy to join with worldgeojson data.
+3. Corrected the iso and per capita column names.
+4. Made all column names to lower case.
+5. Finally, corrected some country names.
 
 
 ```{r}
@@ -88,12 +71,9 @@ co2_emissions$name[co2_emissions$name=="Côte d'Ivoire"]<-"Ivory Coast"
 ```
 
 ***
-<center>
-<h1>Total Emissions</h1>
-</center>
-<br>
 
-<center>
+### Total Emisisions
+
 ```{r}
 emissions_total<-co2_emissions %>% 
   select(name, total)
@@ -122,12 +102,9 @@ highchart() %>%
   hc_title(text="Top 10 Countries By Total Emissions")
 
 ```
-</center>
-
 
 ***
 
-<center>
 ```{r}
 highchart() %>%
   hc_add_series_map(worldgeojson, emissions_total, value = "total_emissions", 
@@ -136,30 +113,14 @@ highchart() %>%
   hc_title(text = "World Total Emissions") %>% 
   hc_subtitle(text = "Total Emissions")
 ```
-</center>
 
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
-USA has highest total emissions.
-</p>
-</div> 
+_USA has highest total emissions._
+
 
 ***
 
-<center>
-  <h1>World Map - Percentage of All emissions</h1>
-</center>
+#### World Map - Percentage of All emissions
 
-<center>
 ```{r}
 world_all_emissions_percent<-co2_emissions %>% 
   select(name, total, coal, oil, gas, cement, flaring, other)
@@ -232,31 +193,14 @@ highchart() %>%
 
 
 ```
-</center>
 
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 USA and China have highest CO2 emissions percentage with 24.29% and 14.36% respectively.
-</p>
-</div> 
 
 ***
 
 
-<center>
-  <h1>Emissions in past 10 years (Bar and Line/Pie charts)</h1>
-</center>
+### Emissions in past 10 years (Bar and Line/Pie charts)
 
-<center>
 ```{r}
 past_10_years<-co2_emissions %>% 
   select(name,year,total, coal, oil, gas,cement,flaring, other) %>% 
@@ -344,29 +288,12 @@ highchart() %>%
   )
 
 ```
-</center>
-
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 Since past 10 years Coal emissions is the highest contributor to CO2 emissions followed by Oil and Gas.
-</p>
-</div> 
 
 ***
-<center>
-<h1>All emissions since past 100 Years (Animated plot)</h1>
-</center>
 
-<center>
+### All emissions since past 100 Years (Animated plot)
+
 ```{r}
 ## Create function: accumulate_by
 accumulate_by = function(dat, var) {
@@ -460,29 +387,13 @@ pltly
 
 htmlwidgets::saveWidget(pltly, "plotly.html")
 ```
-</center>
 
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 Since past 100 years Coal emissions is the highest contributor to CO2 emissions followed by Oil and Gas.
-</p>
-</div> 
 
 
 ***
 
-<center>
-<h1>Individual Emission analysis</h1>
-</center>
+## Individual Emission analysis
 
 
 ```{r}
@@ -495,13 +406,10 @@ all_emissions<- all_emissions %>%
   summarise(across(everything(), sum, na.rm = TRUE), .groups = 'drop')
 
 ```
-<center>
 
 ***
-<h2>Coal emissions</h2>
-</center>
+#### Coal emissions
 
-<center>
 ```{r}
 top_coal<-all_emissions %>% 
   select(name, coal) %>% 
@@ -517,10 +425,7 @@ highchart() %>%
   hc_add_theme(hc_theme_sandsignika())
 
 ```
-</center>
 
-
-<center>
 ```{r}
 highchart() %>% 
   hc_add_series_map(worldgeojson, df=all_emissions, value="coal", 
@@ -528,31 +433,13 @@ highchart() %>%
   hc_colorAxis(stops=color_stops()) %>% 
   hc_title(text="World Coal Emissions")
 ```
-</center>
 
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 China has highest coal emissions followed by USA.
-</p>
-</div> 
-
 
 ***
 
-<center>
-<h2>Oil emissions</h2>
-</center>
+#### Oil emissions
 
-<center>
 ```{r}
 top_oil<-all_emissions %>% 
   select(name, oil) %>% 
@@ -567,10 +454,7 @@ highchart() %>%
   hc_add_theme(hc_theme_bloom())
 
 ```
-</center>
 
-
-<center>
 ```{r, fig.width=8, fig.height=6}
 highchart() %>% 
   hc_add_series_map(worldgeojson, df=all_emissions, value="oil",
@@ -578,29 +462,13 @@ highchart() %>%
   hc_colorAxis(minColor="#0047AB", maxColor="#088F8F") %>% 
   hc_title(text="World Oil Emissions")
 ```
-</center>
 
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 USA has highest oil emissions followed by China and Russia.
-</p>
-</div> 
 
 ***
-<center>
-<h2>Gas Emissions</h2>
-</center>
 
-<center>
+### Gas Emissions
+
 ```{r}
 top_gas<-all_emissions %>% 
   select(name, gas) %>% 
@@ -626,10 +494,7 @@ stops <- data.frame(
 stops <- list_parse2(stops)
 
 ```
-</center>
 
-
-<center>
 ```{r, fig.width=8, fig.height=6}
 highchart() %>% 
   hc_add_series_map(worldgeojson, df=all_emissions, value="gas",
@@ -637,29 +502,13 @@ highchart() %>%
   hc_colorAxis(stops = stops) %>% 
   hc_title(text="World Gas Emissions")
 ```
-</center>
 
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 USA has highest gas emissions followed by Russia and Canada.
-</p>
-</div> 
 
 ***
-<center>
-<h2>Cement Emissions</h2>
-</center>
 
-<center>
+#### Cement Emissions
+
 ```{r}
 top_cement<-all_emissions %>% 
   select(name, cement) %>% 
@@ -675,8 +524,6 @@ highchart() %>%
 
 ```
  
-
-<center>
 ```{r, fig.width=8, fig.height=6}
 highchart() %>% 
   hc_add_series_map(worldgeojson, df=all_emissions, value="cement",
@@ -684,31 +531,13 @@ highchart() %>%
   hc_colorAxis(minColor="#008080", maxColor="gold") %>% 
   hc_title(text="World Cement Emissions")
 ```
-</center>
 
-</center>
-
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 China has highest cement emissions followed by China and India.
-</p>
-</div>
 
 ***
-<center>
-<h2>Flaring Emissions</h2>
-</center>
 
-<center>
+### Flaring Emissions
+
 ```{r}
 top_flaring<-all_emissions %>% 
   select(name, flaring) %>% 
@@ -723,10 +552,7 @@ highchart() %>%
   hc_add_theme(hc_theme_elementary())
 
 ```
-</center>
 
-
-<center>
 ```{r, fig.width=8, fig.height=6}
 highchart() %>% 
   hc_add_series_map(worldgeojson, df=all_emissions, value="flaring",
@@ -735,36 +561,12 @@ highchart() %>%
   hc_title(text="World Flaring Emissions")
 
 ```
-</center>
 
-</center>
-
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 USA has highest flaring emissions followed by Iran and Russia.
-</p>
-</div>
-
-***
-
 
 
 ***
 
-<center>
-<h1>Percentage Emissions</h1>
-</cemter>
-
-<center>
 ```{r}
 all_emissions_percent<-all_emissions %>% 
   select(name, total, coal, oil, gas, cement, flaring, other) %>% 
@@ -777,14 +579,9 @@ all_emissions_percent<-all_emissions %>%
   mutate(other_percent=round(other*100/sum(total), digits=2))
 
 ```
-</center>
 
-<center>
-<h2>Coal Emissions Percent</h2>
-</center>
+### Coal Emissions Percent
 
-
-<center>
 ```{r}
 coal_emissions_percent<-all_emissions_percent %>% 
   group_by(name) %>% 
@@ -799,25 +596,10 @@ coal_emissions_percent %>%
   hc_xAxis(title = list(text = "Country")) %>%
   hc_yAxis(title = list(text = "Coal Percentage Emission"))
 ```
-</center>
 
-
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 Out of all emissions in North Korea, coal emission contributes highest (91.88%).
-</p>
-</div>
 
-<center>
+
 ```{r}
 highchart() %>%
   hc_add_series_map(worldgeojson, df = all_emissions_percent, value = "coal_percent", 
@@ -840,30 +622,14 @@ highchart() %>%
   )
 
 ```
-</center>
 
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 Most Coal Emissions are from Asia and Europe.
-</p>
-</div>
+
 
 ***
 
-<center>
-<h2>Oil Emissions Percent</h2>
-</center>
+### Oil Emissions Percent
 
-<center>
 ```{r}
 
 oil_emissions_percent<-all_emissions_percent %>% 
@@ -877,11 +643,9 @@ summary(oil_emissions_percent)
 
 
 ```
-</center>
 
 >*There are 45 countries that have 100% Oil Emissions only.*
 
-<center>
 ```{r}
 highchart() %>%
   hc_add_series_map(worldgeojson, df = all_emissions_percent, value = "oil_percent", 
@@ -904,29 +668,14 @@ highchart() %>%
   )
 
 ```
-</center>
 
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 Most oil emissions are from African and South American Countries.
-</p>
-</div>
+
 ***
 
-<center>
-<h2>Gas Emissions Percent</h2>
-</center>
+### Gas Emissions Percent
 
-<center>
+
 ```{r}
 gas_emissions_percent<-all_emissions_percent %>% 
   group_by(name) %>% 
@@ -942,24 +691,9 @@ gas_emissions_percent %>%
   hc_xAxis(title = list(text = "Country")) %>%
   hc_yAxis(title = list(text = "Gas Percentage Emission"))
 ```
-</center>
 
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 Out of all emissions in Bahrain, Gas emission contributes highest (76.62%).
-</p>
-</div>
 
-<center>
 ```{r}
 highchart() %>%
   hc_add_series_map(worldgeojson, df = all_emissions_percent, value = "gas_percent", 
@@ -983,29 +717,11 @@ highchart() %>%
 
 ```
 
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
+
 Most African countries have less Gas Emissions.
-</p>
-</div>
 
+### Cement Emissions Percent
 
-</center>
-
-<center>
-<h2>Cement Emissions Percent</h2>
-</center>
-
-<center>
 ```{r}
 cement_emissions_percent<-all_emissions_percent %>% 
   group_by(name) %>% 
@@ -1021,24 +737,9 @@ cement_emissions_percent %>%
   hc_add_theme(hc_theme_economist())
 
 ```
-</center>
 
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 Out of all emissions in Togo, Cement emission contributes highest (30.59%).
-</p>
-</div>
 
-<center>
 ```{r}
 highchart() %>%
   hc_add_series_map(worldgeojson, df = all_emissions_percent, value = "cement_percent", 
@@ -1060,29 +761,11 @@ highchart() %>%
                         "<b>", "{point.value:.2f}%", "</b><br/>", sep = "")
   )
 ```
-</center>
 
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 Most countries in the world have less cement emissions.
-</p>
-</div>
 
+### Flaring Emissions Percent
 
-<center>
-<h2>Flaring Emissions Percent</h2>
-</center>
-
-<center>
 ```{r}
 flaring_emissions_percent<-all_emissions_percent %>% 
   group_by(name) %>% 
@@ -1097,24 +780,9 @@ flaring_emissions_percent %>%
   hc_yAxis(title = list(text = "Flaring Percentage Emission")) %>% 
   hc_add_theme(hc_theme_bloom())
 ```
-</center>
 
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 Out of all emissions in Gabon, Flaring emission contributes highest (52.09%).
-</p>
-</div>
 
-<center>
 ```{r}
 highchart() %>%
   hc_add_series_map(worldgeojson, df = all_emissions_percent, value = "flaring_percent", 
@@ -1136,30 +804,13 @@ highchart() %>%
                         "<b>", "{point.value:.2f}%", "</b><br/>", sep = "")
   )
 ```
-</center>
 
-</center>
-
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 Most countries in the world have less flaring emissions.
-</p>
-</div>
 
-<center>
-<h2>Other Emissions Percent</h2>
-</center>
 
-<center>
+### Other Emissions Percent
+
+
 ```{r}
 other_emissions_percent<-all_emissions_percent %>% 
   group_by(name) %>% 
@@ -1175,22 +826,9 @@ other_emissions_percent %>%
   hc_add_theme(hc_theme_sandsignika())
 ```
 
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
-China has highest other forms of emissions.
-</p>
-</div>
 
-<center>
+China has highest other forms of emissions.
+
 ```{r}
 highchart() %>%
   hc_add_series_map(worldgeojson, df = all_emissions_percent, value = "other_percent", 
@@ -1215,19 +853,6 @@ highchart() %>%
 
 ```
 
-</center>
 
-<div style="color:white;
-           display:fill;
-           border-radius:10px;
-           background-color:#1e2761;
-           font-size:110%;
-           font-family:Courier New;
-           letter-spacing:0.5px">
-<p style="padding: 10px;
-              color:white;
-              text-align:center;
-              font-weight:bold;">
 Africa has least to none other forms of emissions.
-</p>
-</div>
+
